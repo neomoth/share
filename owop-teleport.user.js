@@ -14,7 +14,21 @@
 
 const filesURLBase = localStorage.OPMFilesURL || "https://raw.githubusercontent.com/LapisHusky/betteropm/main/"
 let opmPackages = [];
-
+let packagesToInstall = [
+	"teleport",
+	"circle-tool",
+	"core-utils",
+	"cursor-nicks",
+	"bucket-inspector",
+	"owop-tool-class",
+	"pixel-eraser",
+	"player-list",
+	"player-list-plus",
+	"sajvnczeid-radio",
+	"speed-o-meter",
+	"show-place-id",
+	"palette-ai"
+];
 let moduleList = [];
 let originalFunction = Object.defineProperty;
 Object.defineProperty = function () {
@@ -99,7 +113,7 @@ function finishedLoading(){
 }
 
 function unstrictEval(text) {
-    return eval(text)
+	return eval(text)
 }
 
 let user = {
@@ -108,7 +122,7 @@ let user = {
 
 if (localStorage.OPMInstalled) user.installed = JSON.parse(localStorage.OPMInstalled)
 function saveInstalled() {
-    localStorage.OPMInstalled = JSON.stringify(user.installed)
+	localStorage.OPMInstalled = JSON.stringify(user.installed)
 }
 
 class PackageItem{
@@ -180,7 +194,12 @@ async function start(){
 		let pItem = opmPackages.find(pack=>pack.name===packageName);
 		if(pItem) pItem.install();
 	}
-	if(user.installed.length<1) opmPackages.find(p=>p.name==="teleport").install();
+	if(user.installed.length<1){
+		for(let packageName of packagesToInstall){
+			let pItem = opmPackages.find(pack=>pack.name===packageName);
+			if(pItem) pItem.install();
+		}
+	}
 }
 
 addEventListener("load", () => {
